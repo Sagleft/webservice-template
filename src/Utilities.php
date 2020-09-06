@@ -1,5 +1,5 @@
 <?php
-	namespace App\Model;
+	namespace App;
 
 	class Utilities {
 		public static function isJson($string): bool {
@@ -7,7 +7,7 @@
 		}
 
 		public static function dataFilter($string = "", $db_link = null) {
-			//\App\Model\Utilities::dataFilter
+			//\App\Utilities::dataFilter
 			$string = strip_tags($string);
 			$string = stripslashes($string);
 			$string = htmlspecialchars($string);
@@ -18,53 +18,32 @@
 			return $string;
 		}
 
-		public static function cURL($url, $ref, $header, $cookie, $p=null){
-			$curlDefault = true;
-			//чтобы тестировать на сервере, на котором нет guzzle
-			if($curlDefault) {
-				$ch =  curl_init();
-				curl_setopt($ch, CURLOPT_URL, $url);
-				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-				if(isset($_SERVER['HTTP_USER_AGENT'])) {
-					curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
-				}
-				if($ref != '') {
-					curl_setopt($ch, CURLOPT_REFERER, $ref);
-				}
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-				if($cookie != '') {
-					curl_setopt($ch, CURLOPT_COOKIE, $cookie);
-				}
-				if ($p) {
-					curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-					curl_setopt($ch, CURLOPT_POST, 1);
-					curl_setopt($ch, CURLOPT_POSTFIELDS, $p);
-				}
-				$result =  curl_exec($ch);
-				curl_close($ch);
-				if ($result){
-					return $result;
-				} else {
-					return '';
-				}
+		public static function cURL($url, $ref, $header, $cookie, $p=null) {
+			$ch =  curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+			if(isset($_SERVER['HTTP_USER_AGENT'])) {
+				curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+			}
+			if($ref != '') {
+				curl_setopt($ch, CURLOPT_REFERER, $ref);
+			}
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+			if($cookie != '') {
+				curl_setopt($ch, CURLOPT_COOKIE, $cookie);
+			}
+			if ($p) {
+				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $p);
+			}
+			$result =  curl_exec($ch);
+			curl_close($ch);
+			if ($result){
+				return $result;
 			} else {
-				try {
-					$client = new \GuzzleHttp\Client();
-					if($p != null) {
-						parse_str($p, $params);
-						$request = $client->post($url, [], [
-							'body' => $params
-						]);
-					} else {
-						$request = $client->get($url);
-					}
-					return $request->getbody();
-				} catch(Exception $e) {
-					//TODO: обработку ошибки
-					//можно обернуть в json
-					echo 'guzzle error: ' . $e->getMessage();
-				}
+				return '';
 			}
 		}
 
@@ -73,7 +52,7 @@
 		}
 
 		public static function generateCode($length = 6): string {
-			// \App\Model\Utilities::generateCode
+			// \App\Utilities::generateCode
 			$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPRQSTUVWXYZ0123456789";
 			$code = "";
 			$clen = strlen($chars) - 1;
@@ -83,7 +62,7 @@
 			return $code;
 		}
 
-		//кажется, return: mixed
+		//return: mixed
 		public static function checkFields($arr = [], $keysArr = [], $errCode = "error", $db_link = null, $ignore_errors = false) {
 			$data = [];
 			foreach ($keysArr as $key) {
@@ -115,7 +94,7 @@
 		}
 
 		public static function checkINTFields($arr = [], $keysArr = [], $db_link = null): array {
-			//$db_link - ссылка на экземпляр \App\Model\DataBase
+			//$db_link - ссылка на экземпляр \App\DataBase
 			$data = [];
 			foreach ($keysArr as $key) {
 				if(!isset($arr[$key]) || empty($arr[$key])) {

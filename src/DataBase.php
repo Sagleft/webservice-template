@@ -1,5 +1,5 @@
 <?php
-	namespace App\Model;
+	namespace App;
 	
 	class DataBase {
 		private $db_link = null;
