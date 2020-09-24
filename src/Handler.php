@@ -17,25 +17,10 @@
 			if($this->isDBEnabled()) {
 				$this->db = new DataBase();
 			}
-
-			$this->logic   = new Logic();
-			$this->user    = new User();
-			$this->renderT = new Render([]);
-
-			if($this->isDBEnabled()) {
-				$this->logic->setdb($this->db);
-				$this->user->setdb($this->db);
-			}
-			$this->logic->setUser($this->user);
 		}
 
 		function isDBEnabled(): bool {
 			return $this->db_enabled;
-		}
-
-		public function render($data = []) {
-			$this->renderT = new Render($data);
-			$this->renderT->twigRender();
 		}
 
 		public function dataFilter($str = ''): string {
