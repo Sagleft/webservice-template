@@ -34,4 +34,21 @@
 		public function checkINT($value = 0): int {
 			return Utilities::dataFilter($value, $this->db);
 		}
+		
+		public function apiSuccess($data = []): void {
+			exit(json_encode([
+				'status' => 'success',
+				'data'   => $data,
+				'error'  => ''
+			]));
+		}
+
+		public function apiError($err_info = '', $err_code = 500): void {
+			http_response_code($err_code);
+			exit(json_encode([
+				'status' => 'success',
+				'data'   => $data,
+				'error'  => ''
+			]));
+		}
 	}
