@@ -47,7 +47,7 @@
 			}
 		}
 
-		public static function curl_get($url) {
+		public static function curlGET($url) {
 			return Utilities::cURL($url, '', '', '');
 		}
 
@@ -94,7 +94,7 @@
 		}
 
 		public static function checkINTFields($arr = [], $keysArr = [], $db_link = null): array {
-			//$db_link - ссылка на экземпляр \App\DataBase
+			//$db_link - \App\DataBase object
 			$data = [];
 			foreach ($keysArr as $key) {
 				if(!isset($arr[$key]) || empty($arr[$key])) {
